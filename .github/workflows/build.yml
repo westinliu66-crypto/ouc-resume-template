@@ -1,0 +1,36 @@
+name: Build Resume
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v4
+
+      - name: Download fonts (not stored in repo, ~21MB)
+        run: |
+          mkdir -p fonts/hansans fonts/Main
+          curl -fsSL -o fonts/hansans/NotoSansSC-Regular.ttf https://raw.githubusercontent.com/maksymilan/zju-resume-template/master/fonts/hansans/NotoSansSC-Regular.ttf
+          curl -fsSL -o fonts/hansans/NotoSansSC-Bold.ttf   https://raw.githubusercontent.com/maksymilan/zju-resume-template/master/fonts/hansans/NotoSansSC-Bold.ttf
+          curl -fsSL -o fonts/Main/texgyretermes-regular.otf https://raw.githubusercontent.com/maksymilan/zju-resume-template/master/fonts/Main/texgyretermes-regular.otf
+          curl -fsSL -o fonts/Main/texgyretermes-bold.otf    https://raw.githubusercontent.com/maksymilan/zju-resume-template/master/fonts/Main/texgyretermes-bold.otf
+
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: CV.tex
+          latexmk_use_xelatex: true
+
+      - name: Upload PDF as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CV-PDF
+          path: CV.pdf
+          if-no-files-found: error

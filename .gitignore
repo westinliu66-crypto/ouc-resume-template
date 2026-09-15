@@ -1,0 +1,5 @@
+*.log
+*.aux
+*.DS_Store
+fonts/
+CV.pdf

@@ -1,0 +1,163 @@
+\documentclass[11pt]{article}
+
+
+\setlength{\parindent}{0pt}
+\usepackage{xltxtra}
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\usepackage{url}
+\urlstyle{tt}
+\usepackage{xcolor}
+\definecolor{CVBlue}{RGB}{0,91,172} % 中国海洋大学 海大蓝
+\usepackage{calc}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\usepackage{enumitem}
+\CJKsetecglue{} %% 取消中文与数字之间的间隙
+
+
+%% 主文档字体设置
+\setmainfont[
+    Path = fonts/Main/,
+    Extension = .otf,
+    BoldFont = texgyretermes-bold.otf, % 加粗字体
+]{texgyretermes-regular.otf} % 正文字体
+
+% 中文字体设置
+\setCJKmainfont[
+    Path = fonts/hansans/,
+    Extension = .ttf,
+    BoldFont = NotoSansSC-Bold.ttf, % 加粗字体
+]{NotoSansSC-Regular.ttf} % 正文字体
+
+
+\usepackage{relsize}
+\usepackage{xspace}
+
+% 使用 fontawesome（部分图标）
+\usepackage{fontawesome} 
+
+% A4纸，上下左右边距
+\usepackage[
+    a4paper,
+    left=1.2cm,
+    right=1.2cm,
+    top=1.5cm,
+    bottom=1cm,
+    nohead
+]{geometry}
+
+\renewcommand{\baselinestretch}{1.5} % 行间距设为1.5
+
+\usepackage{titlesec}
+\usepackage{enumitem}
+\setlist{noitemsep} % 取消列表项间的额外间距
+%\setlist{nosep} % 取消所有垂直间距
+\setlist[itemize]{topsep=0.25em, leftmargin=*}
+\setlist[enumerate]{topsep=0.25em, leftmargin=*}
+
+% --- 用于控制【不同项目之间】的垂直距离 ---
+\newlength{\interProjectSpacing}
+\setlength{\interProjectSpacing}{0.9em} % <--- 在此调整项目之间的距离
+\newcommand{\projectsep}{\vspace{\interProjectSpacing}}
+
+% --- 用于控制【项目标题】与下方【项目描述】的距离 ---
+\newlength{\intraProjectTitleSep}
+\setlength{\intraProjectTitleSep}{0.4em} % <--- 在此调整标题和描述的距离
+\newcommand{\titlebreak}{\\[\intraProjectTitleSep]}
+
+% --- 用于控制【项目描述】与下方【要点列表】的距离 ---
+\newlength{\intraProjectListTopSep}
+\setlength{\intraProjectListTopSep}{0.2em} % <--- 在此调整描述和列表的距离
+
+% =======================================================================
+
+
+\titleformat{\section}         % 定制 \section 命令 
+{\large\bfseries\raggedright} % 将 section 标题设置为大号、粗体且左对齐
+{}{0em}                      % 可用于为所有 section 添加前缀（如“章节...”）
+{}                           % 可用于在标题前插入代码
+[{\color{CVBlue}\titlerule}]  % 在标题后插入一条横线
+\titlespacing*{\section}{0cm}{*1.6}{*1.2}
+
+
+
+\begin{document}
+\pagenumbering{gobble}
+
+%%%% 利用tikz来定位照片
+\begin{tikzpicture}[remember picture, overlay] 
+    \node[anchor = north east] at ($(current page.north east)+(-2cm,-1.2cm)$) {\includegraphics[height=3cm]{avatar.jpg}};
+  \end{tikzpicture}%
+  %%%% 利用tikz来定位学校Logo，这里只在第一页显示（ouc.jpg 为校徽+中英文校名横版组合，无透明边距）
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[anchor = north west] at ($(current page.north west)+(0.4cm,-0.45cm)$) {\includegraphics[height=1.5cm]{ouc.jpg}};
+  \end{tikzpicture}%
+\centerline{\LARGE\bfseries{【姓名】}}
+
+\centerline{\normalsize{\faPhone\ 【111-1111-1111】 \quad \faEnvelopeO\ \href{mailto:yourname@stu.ouc.edu.cn}{yourname@stu.ouc.edu.cn}}}
+
+\centerline{\normalsize{\faGithubSquare\ \href{https://github.com/yourname}{https://github.com/yourname} \quad \faRssSquare\ \href{https://yourname.github.io/}{https://yourname.github.io}}}
+    
+\section{\makebox[\widthof{\faGraduationCap}][c]{\color{CVBlue}\faGraduationCap}\ 教育背景}
+\textbf{中国海洋大学} \hfill 【2024.09 -- 2027.06】\\[0.5em] % 标题和正文间加一点距离
+【专业名称】\quad 【硕士/本科】
+\begin{itemize}[nosep]
+    \item 相关课程：《【课程一】》、《【课程二】》、《【课程三】》
+\end{itemize}
+
+\section{\makebox[\widthof{\faUsers}][c]{\color{CVBlue}\faUsers}\ 项目经历}
+
+% --- 第一个项目 ---
+% 将标题行末尾的 \\ 替换为 \titlebreak 命令
+\textbf{【项目名称一】} \hfill 【2024.08 -- 至今】 \titlebreak
+项目描述：【一两句话说明项目定位、解决什么问题，突出与目标岗位的相关性。】
+% 在 itemize 的选项中，使用 topsep=\intraProjectListTopSep 来控制上边距
+\begin{itemize}[nosep, topsep=\intraProjectListTopSep]
+    \item \textbf{要点一}：【做了什么 → 怎么做的 → 结果，尽量量化。】
+    \item \textbf{要点二}：【同上。】
+    \item \textbf{核心产出}：【掌握的技能 / 产出的成果。】
+\end{itemize}
+
+% 使用 \projectsep 命令来分隔两个项目
+\projectsep
+
+% --- 第二个项目 ---
+\textbf{【项目名称二 / 实习经历】} \hfill 【2025.02 -- 至今】 \titlebreak
+项目描述：【项目 / 实习背景一句话。】
+\begin{itemize}[nosep, topsep=\intraProjectListTopSep]
+    \item \textbf{要点一}：【职责与成果。】
+    \item \textbf{要点二}：【职责与成果。】
+\end{itemize}
+
+% --- 如需更多条目（如工作经历），复制下面这段即可 ---
+% \projectsep
+% \textbf{【公司名称】} \hfill 【2021.03 -- 2023.11】 \titlebreak
+% 【岗位名称】\quad 【部门】
+% \begin{itemize}[nosep, topsep=\intraProjectListTopSep]
+%     \item 【工作职责与成果一；】
+%     \item 【工作职责与成果二。】
+% \end{itemize}
+
+\section{\makebox[\widthof{\faCogs}][c]{\color{CVBlue}\faCogs}\ 技术栈}
+\begin{itemize}[nosep]
+    \item \textbf{编程语言：} 【Go, Python, C++ 等】
+    \item \textbf{开发工具：} 【Git, Vim, LaTeX 等】
+    \item \textbf{操作系统：} 【Linux / Windows】
+\end{itemize}
+\section{\makebox[\widthof{\faGraduationCap}][c]{\color{CVBlue}\faList}\ 获奖情况}
+\begin{itemize}
+    \item 【奖项名称】 \hfill 【2023.12】
+
+\end{itemize}
+
+\section{\makebox[\widthof{\faInfo}][c]{\color{CVBlue}\faInfo}\ 其他}
+\begin{itemize}[parsep=0.5ex]
+    \item \textbf{技术博客：} \href{https://yourname.github.io/}{https://yourname.github.io/}
+    \item \textbf{GitHub：} \href{https://github.com/yourname}{https://github.com/yourname}
+    \item \textbf{英语水平：} CET-4, CET-6
+\end{itemize}
+\end{document}
